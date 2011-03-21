@@ -105,10 +105,7 @@ public class Program {
                         } catch (Exception e) {
 
                         }
-
                     }
-
-
                 } catch (Exception e) {
 
                 }
@@ -125,11 +122,11 @@ public class Program {
     }
 
     private static boolean validPassword(String password) {
-        return true;
+        return "bhaisahab".equals(password);
     }
 
     private static boolean validLibraryNumber(String libraryNumber) {
-        return true;
+        return libraryNumber.matches("\\d\\d\\d-\\d\\d\\d\\d");
     }
 
     private static boolean loggedIn() {

@@ -103,7 +103,8 @@ public class ProgramTest {
     @Test
     public void log_in() {
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("doit").then("3").then(EXIT_CODE).atSomePoint());
+        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("bhaisahab")
+                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
         Program.main(new String[]{});
 
@@ -112,14 +113,26 @@ public class ProgramTest {
     }
 
     @Test
-    public void unsuccessful_login() {
+    public void unsuccessful_login_because_of_username() {
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("doit").then("3").then(EXIT_CODE).atSomePoint());
+        System.setIn(stubInputStream().toReturn("5").then("11-1111").then("bhaisahab")
+                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
         Program.main(new String[]{});
 
-        assertThat(outputStream.toString(), containsString("Your library number is"));
-        assertThat(outputStream.toString(), containsString("111-1111"));
+        assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
+    }
+    
+
+    @Test
+    public void unsuccessful_login_because_of_password() {
+        System.setOut(new PrintStream(outputStream));
+        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("disrespectfulPassword")
+                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
+
+        Program.main(new String[]{});
+
+        assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
     }    
 
     @After
