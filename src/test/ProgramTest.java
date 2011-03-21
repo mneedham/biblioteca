@@ -12,11 +12,12 @@ import java.io.*;
 
 public class ProgramTest {
     private PrintStream console;
+    private ByteArrayOutputStream outputStream;
     private static final String EXIT_CODE = "9";
     private static final String BOOK_LISTING = "1";
-    private ByteArrayOutputStream outputStream;
     private static final String TALK_TO_LIBRARIAN = "3";
     private static final String CHECK_OUT_BOOK = "2";
+    private static final String MOVIE_LISTING = "4";
 
     @Before
     public void before() {
@@ -87,10 +88,20 @@ public class ProgramTest {
         assertThat(outputStream.toString(), containsString("Enter a valid integer!!"));
     }
 
+    @Test
+    public void show_movie_listing() {
+        System.setOut(new PrintStream(outputStream));
+        System.setIn(stubInputStream().toReturn(MOVIE_LISTING).then(EXIT_CODE).atSomePoint());
+
+        Program.main(new String[]{});
+
+        assertThat(outputStream.toString(), containsString("The Shawshank Redemption - Director: Frank Darabont Rating: 10"));
+        assertThat(outputStream.toString(), containsString("Drainage - Director: Francisco Trindade Rating: N/A"));
+        assertThat(outputStream.toString(), containsString("Pulp Fiction - Director: Quentin Tarantino Rating: 6"));        
+    }
+
     @After
     public void after() {
         System.setOut(console);
     }
-
-
 }
