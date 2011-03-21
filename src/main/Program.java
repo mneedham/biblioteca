@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;// package com.thoughtworks.biblioteca;
 
 public class Program {
+    private static boolean loggedIn = false;
+    private static String savedLibraryNumber = "";
+
     public static void main(String[] args) {
         while (true) {
             System.out.println("**********************************************************");
@@ -15,6 +18,7 @@ public class Program {
             System.out.println("*         2. Check out Book                              *");
             System.out.println("*         3. Check Library Number                        *");
             System.out.println("*         4. Movie Listing                               *");
+            System.out.println("*         5. Login                                       *");
             System.out.println("*         9. Exit                                        *");
             System.out.println("**********************************************************");
             System.out.println("Your Selection: ");
@@ -67,8 +71,14 @@ public class Program {
                         System.out.println("Sorry we don't have that book yet.");
                 }
             } else if (i1 == 3) {
-                System.out.println("\n");
-                System.out.println("Please talk to Librarian. Thank you.");
+                if (loggedIn()) {
+                    System.out.println("\n");
+                    System.out.println("Your library number is " + savedLibraryNumber);
+                } else {
+
+                    System.out.println("\n");
+                    System.out.println("Please talk to Librarian. Thank you.");
+                }
             } else if (i1 == 4) {
                 System.out.println(createMovie("Rocky", "John G. Avildsen", "10"));
                 System.out.println(createMovie("Rocky II", "John G. Avildsen", "9"));
@@ -80,6 +90,29 @@ public class Program {
                 System.out.println(createMovie("The Godfather", "Francis Ford Coppola", "7"));
                 System.out.println(createMovie("Inception", "Frank Darabont", "10"));
                 System.out.println(createMovie("Pulp Fiction", "Quentin Tarantino", "6"));
+            } else if (i1 == 5) {
+                System.out.println("Enter your library number");
+                try {
+                    String libraryNumber = reader.readLine();
+                    if (validLibraryNumber(libraryNumber)) {
+                        try {
+                            System.out.println("Enter your Password: ");
+                            String password = reader.readLine();
+                            if (validPassword(password)) {
+                                loggedIn = true;
+                                savedLibraryNumber = libraryNumber;
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+
+
+                } catch (Exception e) {
+
+                }
+
             } else if (i1 == 9) {
                 System.out.println("Quitting...");
                 break;
@@ -91,8 +124,21 @@ public class Program {
         }
     }
 
+    private static boolean validPassword(String password) {
+        return true;
+    }
+
+    private static boolean validLibraryNumber(String libraryNumber) {
+        return true;
+    }
+
+    private static boolean loggedIn() {
+        return loggedIn;
+    }
+
+
     private static String createMovie(String movieTitle, String movieDirector, String movieRanking) {
-        return movieTitle + " - Director: " + movieDirector + " Rating: " + movieRanking; 
+        return movieTitle + " - Director: " + movieDirector + " Rating: " + movieRanking;
     }
 }
 

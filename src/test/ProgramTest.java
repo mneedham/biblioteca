@@ -100,6 +100,28 @@ public class ProgramTest {
         assertThat(outputStream.toString(), containsString("Pulp Fiction - Director: Quentin Tarantino Rating: 6"));        
     }
 
+    @Test
+    public void log_in() {
+        System.setOut(new PrintStream(outputStream));
+        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("doit").then("3").then(EXIT_CODE).atSomePoint());
+
+        Program.main(new String[]{});
+
+        assertThat(outputStream.toString(), containsString("Your library number is"));
+        assertThat(outputStream.toString(), containsString("111-1111"));
+    }
+
+    @Test
+    public void unsuccessful_login() {
+        System.setOut(new PrintStream(outputStream));
+        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("doit").then("3").then(EXIT_CODE).atSomePoint());
+
+        Program.main(new String[]{});
+
+        assertThat(outputStream.toString(), containsString("Your library number is"));
+        assertThat(outputStream.toString(), containsString("111-1111"));
+    }    
+
     @After
     public void after() {
         System.setOut(console);

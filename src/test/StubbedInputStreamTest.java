@@ -56,6 +56,20 @@ public class StubbedInputStreamTest {
         assertThat(bytes[0], is("3".getBytes()[0]));
     }
 
+    @Test
+    public void should_let_us_have_inputs_of_more_than_one_character() throws IOException {
+        StubbedInputStream inputStream = stubInputStream().toReturn("mark").atSomePoint();
+
+        byte[] bytes = new byte[8192];
+        inputStream.read(bytes, 0, 8192);
+
+        assertThat(bytes[0], is("m".getBytes()[0]));
+        assertThat(bytes[1], is("a".getBytes()[0]));
+        assertThat(bytes[2], is("r".getBytes()[0]));
+        assertThat(bytes[3], is("k".getBytes()[0]));        
+
+    }
+
 
     @Test
     public void fluentInterface() {

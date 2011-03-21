@@ -22,9 +22,13 @@ class StubbedInputStream extends InputStream {
             return -1;
         }
 
-        bytes[0] = input.remove().getBytes()[0];
-        bytes[1] = "\n".getBytes()[0];
-        return 2;
+        int byteLocation = 0;
+        for(byte b : input.remove().getBytes()) {
+            bytes[byteLocation] = b;
+            byteLocation++;
+        }
+        bytes[byteLocation] = "\n".getBytes()[0];
+        return byteLocation + 1;
     }
 
     @Override
