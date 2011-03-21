@@ -13,6 +13,7 @@ import java.io.*;
 public class ProgramTest {
     private PrintStream console;
     private static final String EXIT_CODE = "9";
+    private static final String BOOK_LISTING = "1";
 
     @Before
     public void before() {
@@ -23,7 +24,7 @@ public class ProgramTest {
     public void showTheNameOfTheLibrary() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("9").atSomePoint());
+        System.setIn(stubInputStream().toReturn(EXIT_CODE).atSomePoint());
 
         Program.main(new String[]{});
 
@@ -34,7 +35,7 @@ public class ProgramTest {
     public void showTheBooksAvailableForRental() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("1").then("9").atSomePoint());
+        System.setIn(stubInputStream().toReturn(BOOK_LISTING).then(EXIT_CODE).atSomePoint());
 
         Program.main(new String[]{});
 
