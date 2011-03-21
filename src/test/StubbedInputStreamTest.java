@@ -66,8 +66,7 @@ public class StubbedInputStreamTest {
         assertThat(bytes[0], is("m".getBytes()[0]));
         assertThat(bytes[1], is("a".getBytes()[0]));
         assertThat(bytes[2], is("r".getBytes()[0]));
-        assertThat(bytes[3], is("k".getBytes()[0]));        
-
+        assertThat(bytes[3], is("k".getBytes()[0]));
     }
 
 
