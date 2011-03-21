@@ -1,17 +1,10 @@
-package main;// package com.thoughtworks.biblioteca;
+package main;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;// package com.thoughtworks.biblioteca;
 
 public class Program {
-    private ITakeInput input;
-
-    public Program(ITakeInput input) {
-        this.input = input;
-    }
-
     public static void main(String[] args) {
-        new Program(new SystemIn()).execute();
-    }
-
-    public void execute() {
         while (true) {
             System.out.println("**********************************************************");
             System.out.println("* Welcome to The Bangalore Public Library System - Biblioteca *");
@@ -24,13 +17,15 @@ public class Program {
             System.out.println("**********************************************************");
             System.out.println("Your Selection: ");
 
+            InputStreamReader inputStream = new InputStreamReader(System.in);
+            BufferedReader reader = new BufferedReader(inputStream);
             int i1 = 0;
             try {
-                i1 = Integer.parseInt(input.readLine());
+                String value = reader.readLine();
+                i1 = Integer.parseInt(value);
             } catch (Exception e) {
                 // Do you know what numbers are!!!
                 System.out.println("Enter a valid integer!!");
-
             }
 
             if (i1 == 1) {
@@ -42,7 +37,7 @@ public class Program {
                 System.out.println(" Please enter the number of the book you wish to checkout: ");
                 int i2 = 0;
                 try {
-                    i2 = Integer.parseInt(input.readLine());
+                    i2 = Integer.parseInt(reader.readLine());
                 } catch (Exception e) {
                     // Do you know what numbers are!!!
                     System.out.println("Enter a valid integer!!");

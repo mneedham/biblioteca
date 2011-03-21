@@ -1,6 +1,5 @@
 package test;
 
-import main.ITakeInput;
 import main.Program;
 import org.junit.After;
 import static org.junit.Assert.assertThat;
@@ -8,10 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class ProgramTest {
     private PrintStream console;
@@ -23,12 +19,28 @@ public class ProgramTest {
     }
 
     @Test
+    public void screwYouBuffer() throws IOException {
+//        System.setIn(new StubbedInputStream());
+
+        InputStreamReader inputStream = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(inputStream);
+
+        System.out.println(reader.readLine());
+
+        InputStreamReader inputStream2 = new InputStreamReader(System.in);
+        BufferedReader reader2 = new BufferedReader(inputStream);
+
+        String value2 = reader2.readLine();
+        System.out.println(value2);
+    }
+
+    @Test
     public void showTheNameOfTheLibrary() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
+        System.setIn(new BufferedInputStream(new ByteArrayInputStream("9\n".getBytes())));
 
-        ITakeInput fakeSystemIn = new FakeInputStream("9");
-        new Program(fakeSystemIn).execute();
+        Program.main(new String[]{});
 
         assertThat(outputStream.toString(), containsString("Welcome to The Bangalore Public Library System"));
     }
@@ -37,12 +49,9 @@ public class ProgramTest {
     public void showTheBooksAvailableForRental() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
+        System.setIn(new BufferedInputStream(new ByteArrayInputStream("1\n9\n".getBytes())));
 
-        System.setIn(new FakeInputStream("1", "9"));
-
-        ITakeInput fakeSystemIn = new FakeInputStream("1", "9");
-
-        new Program(fakeSystemIn).execute();
+        Program.main(new String[]{});
 
         assertThat(outputStream.toString(), containsString("2. eXtreme Programming Explained by Kent Beck"));
     }
@@ -52,23 +61,5 @@ public class ProgramTest {
         System.setOut(console);
     }
 
-    class FakeInputStream extends InputStream implements ITakeInput {
-        private String[] input;
-        private int index;
 
-        public FakeInputStream(String... input) {
-            this.input = input;
-        }
-
-        public String readLine() throws IOException {
-            String value = input[index];
-            index++;
-            return value;
-        }
-
-        @Override
-        public int read() throws IOException {
-            return 0;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-    }
 }

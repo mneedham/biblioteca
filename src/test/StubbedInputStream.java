@@ -2,16 +2,14 @@ package test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Queue;
 
 class StubbedInputStream extends InputStream {
-    private String[] input;
-    private int hasReturned;
+    private Queue<String> input;
 
-    public StubbedInputStream(String... input) {
+    public StubbedInputStream(Queue<String> input) {
         this.input = input;
-        this.hasReturned = 0;
     }
-
 
     @Override
     public int read(byte[] bytes) throws IOException {
@@ -20,13 +18,12 @@ class StubbedInputStream extends InputStream {
 
     @Override
     public int read(byte[] bytes, int i, int i1) throws IOException {
-        if(hasReturned >= 2) {
+        if(input.isEmpty()) {
             return -1;
         }
 
-        bytes[0] = "9".getBytes()[0];
+        bytes[0] = input.remove().getBytes()[0];
         bytes[1] = "\n".getBytes()[0];
-        hasReturned++;
         return 2;
     }
 
@@ -63,5 +60,9 @@ class StubbedInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public static InputStreamBuilder stubInputStream() {
+        return new InputStreamBuilder();
     }
 }
