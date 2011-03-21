@@ -91,6 +91,7 @@ public class Program {
                 System.out.println(createMovie("Inception", "Frank Darabont", "10"));
                 System.out.println(createMovie("Pulp Fiction", "Quentin Tarantino", "6"));
             } else if (i1 == 5) {
+                clearLogin();
                 System.out.println("Enter your library number");
                 try {
                     String libraryNumber = reader.readLine();
@@ -133,6 +134,12 @@ public class Program {
         return loggedIn;
     }
 
+
+
+    private static void clearLogin() {
+        loggedIn = false;
+        savedLibraryNumber = "";
+    }
 
     private static String createMovie(String movieTitle, String movieDirector, String movieRanking) {
         return movieTitle + " - Director: " + movieDirector + " Rating: " + movieRanking;
