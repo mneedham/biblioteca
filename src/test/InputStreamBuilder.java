@@ -6,7 +6,7 @@ import java.util.Queue;
 public class InputStreamBuilder {
     private Queue<String> values = new LinkedList<String>();
 
-    public InputStreamBuilder returns(String value) {
+    public InputStreamBuilder toReturn(String value) {
         this.values.add(value);
         return this;
     }
@@ -16,7 +16,7 @@ public class InputStreamBuilder {
         return this;
     }
 
-    public StubbedInputStream asInputStream() {
+    public StubbedInputStream atSomePoint() {
         return new StubbedInputStream(values);
     }
 }

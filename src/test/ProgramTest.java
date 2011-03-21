@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.containsString;
+import static test.StubbedInputStream.stubInputStream;
 
 import java.io.*;
 
@@ -19,26 +20,10 @@ public class ProgramTest {
     }
 
     @Test
-    public void screwYouBuffer() throws IOException {
-//        System.setIn(new StubbedInputStream());
-
-        InputStreamReader inputStream = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(inputStream);
-
-        System.out.println(reader.readLine());
-
-        InputStreamReader inputStream2 = new InputStreamReader(System.in);
-        BufferedReader reader2 = new BufferedReader(inputStream);
-
-        String value2 = reader2.readLine();
-        System.out.println(value2);
-    }
-
-    @Test
     public void showTheNameOfTheLibrary() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        System.setIn(new BufferedInputStream(new ByteArrayInputStream("9\n".getBytes())));
+        System.setIn(stubInputStream().toReturn("9").atSomePoint());
 
         Program.main(new String[]{});
 
@@ -49,7 +34,7 @@ public class ProgramTest {
     public void showTheBooksAvailableForRental() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        System.setIn(new BufferedInputStream(new ByteArrayInputStream("1\n9\n".getBytes())));
+        System.setIn(stubInputStream().toReturn("1").then("9").atSomePoint());
 
         Program.main(new String[]{});
 

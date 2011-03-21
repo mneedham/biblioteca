@@ -38,7 +38,7 @@ public class StubbedInputStreamTest {
 
     @Test
     public void should_let_us_choose_values_in_input_stream() throws IOException {
-        StubbedInputStream inputStream = stubInputStream().returns("9").then("1").then("3").asInputStream();
+        StubbedInputStream inputStream = stubInputStream().toReturn("9").then("1").then("3").atSomePoint();
 
         byte[] bytes = new byte[8192];
         inputStream.read(bytes, 0, 8192);
@@ -59,6 +59,6 @@ public class StubbedInputStreamTest {
 
     @Test
     public void fluentInterface() {
-        stubInputStream().returns("9").then("1").asInputStream();
+        stubInputStream().toReturn("9").then("1").atSomePoint();
     }
 }
