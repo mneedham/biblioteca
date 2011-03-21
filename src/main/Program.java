@@ -14,6 +14,7 @@ public class Program {
             System.out.println("*         1. List Book Catalog                           *");
             System.out.println("*         2. Check out Book                              *");
             System.out.println("*         3. Check Library Number                        *");
+            System.out.println("*         9. Exit                                        *");
             System.out.println("**********************************************************");
             System.out.println("Your Selection: ");
 
