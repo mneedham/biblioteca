@@ -18,6 +18,7 @@ public class ProgramTest {
     private static final String TALK_TO_LIBRARIAN = "3";
     private static final String CHECK_OUT_BOOK = "2";
     private static final String MOVIE_LISTING = "4";
+    private static final String LOGIN = "5";
 
     @Before
     public void before() {
@@ -30,7 +31,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Welcome to The Bangalore Public Library System"));
     }
@@ -40,7 +41,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(BOOK_LISTING).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("1. Sweet Valley High vol. 4 by John Travolta "));
         assertThat(outputStream.toString(), containsString("2. eXtreme Programming Explained by Kent Beck "));
@@ -53,7 +54,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(CHECK_OUT_BOOK).then("1").then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Thank You! Enjoy the book."));
     }
@@ -63,7 +64,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(CHECK_OUT_BOOK).then("5").then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Sorry we don't have that book yet."));
     }
@@ -73,7 +74,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
     }
@@ -83,7 +84,7 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn("a").then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Enter a valid integer!!"));
     }
@@ -93,20 +94,20 @@ public class ProgramTest {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(MOVIE_LISTING).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("The Shawshank Redemption - Director: Frank Darabont Rating: 10"));
         assertThat(outputStream.toString(), containsString("Drainage - Director: Francisco Trindade Rating: N/A"));
-        assertThat(outputStream.toString(), containsString("Pulp Fiction - Director: Quentin Tarantino Rating: 6"));        
+        assertThat(outputStream.toString(), containsString("Pulp Fiction - Director: Quentin Tarantino Rating: 6"));
     }
 
     @Test
-    public void log_in() {
+    public void successfull_log_in() {
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("bhaisahab")
-                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
+        System.setIn(stubInputStream().toReturn(LOGIN).then("111-1111").then("bhaisahab")
+                .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Your library number is"));
         assertThat(outputStream.toString(), containsString("111-1111"));
@@ -115,25 +116,29 @@ public class ProgramTest {
     @Test
     public void unsuccessful_login_because_of_username() {
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("5").then("11-1111").then("bhaisahab")
-                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
+        System.setIn(stubInputStream().toReturn(LOGIN).then("999999-1111").then("bhaisahab")
+                .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
     }
-    
+
 
     @Test
     public void unsuccessful_login_because_of_password() {
         System.setOut(new PrintStream(outputStream));
-        System.setIn(stubInputStream().toReturn("5").then("111-1111").then("disrespectfulPassword")
-                                      .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
+        System.setIn(stubInputStream().toReturn(LOGIN).then("111-1111").then("disrespectfulPassword")
+                .then(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 
-        Program.main(new String[]{});
+        launchApp();
 
         assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
-    }    
+    }
+
+    private void launchApp() {
+        Program.main(new String[]{});
+    }
 
     @After
     public void after() {
