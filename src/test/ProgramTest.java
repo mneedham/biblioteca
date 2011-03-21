@@ -38,7 +38,10 @@ public class ProgramTest {
 
         Program.main(new String[]{});
 
-        assertThat(outputStream.toString(), containsString("2. eXtreme Programming Explained by Kent Beck"));
+        assertThat(outputStream.toString(), containsString("1. Sweet Valley High vol. 4 by John Travolta "));
+        assertThat(outputStream.toString(), containsString("2. eXtreme Programming Explained by Kent Beck "));
+        assertThat(outputStream.toString(), containsString("3. How to Win Friends and Influence People by Dale Carnagie "));
+        assertThat(outputStream.toString(), containsString("4. How to Cheat at TWU Assignements by Anonymous "));
     }
 
     @After
